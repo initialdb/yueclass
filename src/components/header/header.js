@@ -1,6 +1,6 @@
 import React,{Component} from "react"
 import "./style.less"
-
+import {Link} from "react-router-dom"
 
 class Header extends Component{
     constructor(props){
@@ -11,19 +11,11 @@ class Header extends Component{
     render(){
         return(
             <div id="header">
-                <p>插件</p>
-                <div className="scan-code" onClick={this.handleScanCode}></div>
-                <div className="search-class" onClick={this.handleSearch}></div>
+                <Link to="/"><img src={require("../../static/image/icon/back_icon.png")}/>
+                </Link>
+                <span>我的队友({this.props.classmates})</span>
             </div>
         );
-    }
-
-    handleScanCode(){
-        alert("敬请期待");
-    }
-
-    handleSearch(){
-        alert("敬请期待");
     }
 }
 

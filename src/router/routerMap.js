@@ -1,20 +1,19 @@
 import React,{Component} from "react";
- import {Router,Route} from "react-router";
+import {BrowserRouter as Router,Route} from "react-router-dom";
 import App from "../App";
+import ClassComment from "../containers/Group/group";
+import Home from "../containers/Home/home";
 
 class RouterMap extends Component{
 
-    constructor(props){
-        super(props);
-    }
-
     render(){
         return(
-            <div>
             <Router>
-                <Route path = "/" component={App}/>
+                <div>
+                    <Route exact path = "/" component={App}/>
+                    <Route path="/comment" component={ClassComment}/>
+                </div>
             </Router>
-            </div>
         )
     }
 }

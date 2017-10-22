@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import RouterMap from "./router/routerMap";
-import App from "./App";
 
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(
+    <RouterMap/>
+    , document.getElementById('root'));
 registerServiceWorker();

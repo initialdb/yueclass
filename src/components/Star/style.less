@@ -1,0 +1,33 @@
+#grade{
+  ul{
+    li{
+      float: left;
+      list-style-type: none;
+      width: 20px;
+      height: 20px;
+      margin: 0 2px;
+    }
+    .off{
+      background: url("../../static/image/staroff.png") no-repeat;
+      background-size: 100% 100%;
+    }
+    .on{
+      background: url("../../static/image/staron.png") no-repeat;
+      background-size: 100% 100%;
+    }
+    .comment-title{
+      width: auto;
+      margin-right: 10px;
+      color: #b3dce7;
+    }
+  }
+
+  ul:after{
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
