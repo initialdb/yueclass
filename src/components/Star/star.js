@@ -4,15 +4,14 @@ import "./style.less"
 class Star extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            modify:true,               //是否能修改星星数
-            star:0                      //星星个数
-        };
         this.li_className=["off","off","off","off","off"];      //设置li的classname
+        this.state={
+            count:this.props.star_data.count
+        }
     }
 
     render(){
-        this.starHandle(this.state.star);
+        this.starHandle(this.props.star_data.count);
         return(
             <div id="grade">
                 <ul>
@@ -43,15 +42,15 @@ class Star extends Component{
     //点击事件
     clickHandle(e){
         //确认是否有修改权限
-        if(this.state.modify) {
+        if(this.props.star_data.modify) {
             e.preventDefault();
             let count = parseInt(e.target.id.substring(4,5));
-            this.setState({
-                star:count
-            });
+            //将star个数更新到redux
+            let newData =Object.assign({},this.props.star_data,{count:count});
+            let starUpdate = this.props.starUpdate;         //通过dispatch更新
+            starUpdate(newData);
         }
     }
-
 }
 
 export default Star;
