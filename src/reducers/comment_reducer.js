@@ -1,5 +1,5 @@
 import * as actionTypes from "../constants/actionType";
-
+//评论的reducer
 const initialState = {modify:true,count:0,str:""};
 
 export default function comment_reducer(state=initialState, action){

@@ -3,7 +3,7 @@ import Header from "../../components/header/header";
 import InputWindow from "../../components/inputwindow/inputwindow";
 import "./style.less"
 import Star from "../../components/Star/star";
-import * as commentAction from "../../actions/action"
+import * as commentAction from "../../actions/comment_action"
 import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 
@@ -16,13 +16,19 @@ class Comment extends Component{
         return(
             <div id="comment">
                 <Header classmates={"xxxx"}/>
-                <InputWindow strUpdate={this.props.commentUpdate.updateCommentStr.bind(this)}/>
+                <InputWindow strUpdate={this.props.commentUpdate.updateCommentStr.bind(this)} star_data={this.props.star}/>
                 <Star star_data={this.props.star} starUpdate={this.props.commentUpdate.updateCommentStar.bind(this)}  />
                 <div className="send_btn">
-                    <button>发表</button>
+                    <button onClick={this.sendHandler.bind(this)}>发表</button>
                 </div>
             </div>
         );
+    }
+
+
+    sendHandler(){
+        //上传数据到服务器
+        // console.log(this.props.star.count+" "+this.props.star.str);
     }
 }
 

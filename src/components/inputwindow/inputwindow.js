@@ -21,6 +21,11 @@ class InputWindow extends Component{
         this.setState({
             value:val
         });
+        //更新数据到redux
+        let strUpdate = this.props.strUpdate;
+        let data = this.props.star_data;
+        data.str = val;
+        strUpdate(data);
    }
 }
 
