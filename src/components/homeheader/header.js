@@ -1,6 +1,6 @@
 import React,{Component} from "react"
 import "./style.less"
-
+import {Link} from "react-router-dom"
 
 class HomeHeader extends Component{
     constructor(props){
@@ -12,15 +12,12 @@ class HomeHeader extends Component{
         return(
             <div id="home-header">
                 <p>插件</p>
-                <div className="scan-code" onClick={this.handleScanCode}></div>
-                <div className="search-class" onClick={this.handleSearch}></div>
+                <Link to="/user_info"><div className="scan-code" ></div></Link>
+                <Link to="/upload"><div className="search-class"></div></Link>
             </div>
         );
     }
 
-    handleScanCode(){
-        alert("敬请期待");
-    }
 
     handleSearch(){
         alert("敬请期待");

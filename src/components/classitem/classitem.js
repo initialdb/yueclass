@@ -9,8 +9,9 @@ class ClassItem extends Component{
     }
 
     render(){
+        let url = this.props.url;
         return(
-            <Link to="/comment">
+            <Link to={url}>
                 <div className="class-item">
                     <img src={this.props.item.url} alt="图挂了"/>
                     <p>{this.props.item.title}</p>

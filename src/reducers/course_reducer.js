@@ -2,7 +2,7 @@ import *as actionTypes from "../constants/actionType";
 
 const initialState = {
     count:0,
-    data:[]
+    course:[]
 };
 
 export default function (state=initialState,action) {

@@ -6,7 +6,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Home/>
+        <Home history = {this.props.history}/>
       </div>
     );
   }

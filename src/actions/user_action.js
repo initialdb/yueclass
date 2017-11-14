@@ -6,3 +6,10 @@ export const login = function (data) {
        data
    }
 };
+
+export const registting = function (data) {
+  return{
+      type:actionTypes.REGIST_USER,
+      data
+  }
+};

@@ -11,7 +11,7 @@ class Header extends Component{
     render(){
         return(
             <div id="header">
-                <Link to="/"><img src={require("../../static/image/icon/back_icon.png")}/>
+                <Link to={this.props.linkurl}><img src={require("../../static/image/icon/back_icon.png")}/>
                 </Link>
                 <span>我的队友({this.props.classmates})</span>
             </div>

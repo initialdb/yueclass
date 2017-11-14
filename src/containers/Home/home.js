@@ -4,36 +4,74 @@ import ClassGroup from "../../components/classgroup/classgroup";
 import *as courseAction from "../../actions/course_action"
 import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
-import User from "../User/user";
+import {post,get} from "../../fetch/post"
+
 
 class Home extends Component{
     constructor(props){
         super(props);
         this.state = {};
-        this.classes = [{title:"数学",url:require("../../static/image/icon/chinese.png")},{title:"英语",url:require("../../static/image/icon/chinese.png")},{title:"计算机",url:require("../../static/image/icon/chinese.png")},
-            {title:"数学",url:require("../../static/image/icon/chinese.png")}];
     }
 
     render(){
         return(
-            <div>
-                {/*<Header/>*/}
-                {/*<ClassGroup data = {this.props.course.course}/>*/}
-                <User/>
-            </div>
+                    <div>
+                        <Header/>
+                        <ClassGroup data = {this.props.course.course} urlhead ="/group/"/>
+                    </div>
         );
     }
 
+    componentWillMount(){
+
+    }
+
     componentDidMount(){
-        //从服务器请求数据
+        // if (!this.props.userdata.islogin)
+        //     this.props.history.push("/user_login");
+        // else {
+            //服务器请求数据
+            let result = fetch(`http://localhost:3000/api/course/get_course?id=757072345`,{
+                credentials: 'include'
+            });
+            result.then((res)=>{
+                    return res.json();
+                }
+            ).then((json)=>{
+                //解析课程
+                let res = this.getCourse(json);
+                console.log(res);
+                //更新数据到redux
+                let updateCourse = this.props.courseUpdate;
+                updateCourse.updateCourse(res);
+            });
+        }
+    // }
+
+    /**
+     * 课程解析
+     * @param data
+     */
+    getCourse(data){
+        //课程
         let res = {
             count:0,
-            course :[{title:"数学",url:require("../../static/image/icon/chinese.png")},{title:"英语",url:require("../../static/image/icon/chinese.png")},{title:"计算机",url:require("../../static/image/icon/chinese.png")},
-                {title:"数学",url:require("../../static/image/icon/chinese.png")}],
+            course:[]
         };
-        //更新数据到redux
-        let updateCourse = this.props.courseUpdate;
-        updateCourse.updateCourse(res);
+        for (let i=0;i<data.length;i++){
+            let course = {
+                title:"",
+                url:require("../../static/image/icon/chinese.png"),
+                teacher:"",
+                course_id:""
+            };
+            course.title = data[i].course_name;
+            course.teacher = data[i].teacher;
+            course.id = data[i].course_id;
+            res.course[i]=course;
+        }
+        res.count = data.length;
+        return res;
     }
 }
 
@@ -41,7 +79,8 @@ class Home extends Component{
 //------------------------------react-redux------------------------------------
 function mapStateToProps(state) {
     return{
-        course:state.course_reducer
+        course:state.course_reducer,
+        userdata:state.user_reducer
     }
 }
 

@@ -3,7 +3,8 @@ import * as actionTypes from "../constants/actionType"
 //小组的reducer
 const initialState = {
     count:0,
-    classmates:[{}]
+    classmates:[{}],
+    course_id:""
 };
 
 export default function crew_reducer(state=initialState,action) {

@@ -9,15 +9,13 @@ class ClassGroup extends Component{
     }
 
     render(){
-        // let classes = [{title:"数学",url:require("../../static/image/icon/chinese.png")},{title:"英语",url:require("../../static/image/icon/chinese.png")},{title:"计算机",url:require("../../static/image/icon/chinese.png")},
-        //     {title:"数学",url:require("../../static/image/icon/chinese.png")}];
         let data = this.props.data;
         return(
             <div id="class-group">
                 {
                     data?
                     data.map((item,index)=>{
-                    return(<ClassItem item={item} key ={index}/>);
+                    return(<ClassItem item={item} key ={index} url={this.props.urlhead+item.id}/>);
                 }):""
                 }
             </div>
