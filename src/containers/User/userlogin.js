@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import *as userAction from "../../actions/user_action";
 
+
 class UserLogin extends Component{
     constructor(props){
         super(props);
@@ -16,16 +17,19 @@ class UserLogin extends Component{
                     <p className="login-title">邮箱/手机登录</p>
                     <Login  admin_type = "log" userdata = {this.props.userdata} updateUserdata={this.props.userdataUpdate} link_title="过来注册"
                             doSuccess={this.logSuccess.bind(this)} history={this.props.history}
+                            link_url = "/user_reg"
                     />
                 </div>
             );
     }
     logSuccess(that,res){
         let history = this.props.history;
-        setTimeout(()=>{
-            history.push("/user_info");
-        },1000);
-        console.log("登录成功,1s后跳转");
+            const params = this.props.match.params.router;
+            if (params) {
+                history.push("/" + params);
+            }
+            else
+                history.push("/");
         // 更新账号密码到redux
         let data = that.props.userdata;
         data.account = that.state.account;
@@ -36,6 +40,11 @@ class UserLogin extends Component{
         data.username = res.username;
         const update = that.props.updateUserdata.login;
         update(data);
+        //存储密码到localStorage
+        localStorage.setItem("userdata",JSON.stringify({
+            account:data.account,
+            password:data.password
+        }));
     }
 }
 

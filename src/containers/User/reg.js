@@ -4,6 +4,8 @@ import "./style.less";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import *as userAction from "../../actions/user_action";
+import {Route} from "react-router-dom"
+import regInfo from "./reginfo/reginfo";
 
 class Regist extends Component{
     constructor(props){
@@ -22,8 +24,9 @@ class Regist extends Component{
             return(
                 <div id="user">
                     <p className="login-title">邮箱/手机注册</p>
-                    <Login  admin_type = {"reg"} userdata = {this.props.userdata} updateUserdata={this.props.userdataUpdate} link_title="过来登录"
+                    <Login  admin_type = "reg" userdata = {this.props.userdata} updateUserdata={this.props.userdataUpdate} link_title="过来登录"
                         doSuccess = {this.regSuccess.bind(this)}
+                            link_url = "/user_login"
                     />
                 </div>
             );
@@ -32,10 +35,14 @@ class Regist extends Component{
 
     regSuccess(){
         let history = this.props.history;
+        //更新注册状态到redux
+        let data = this.props.userdata;
+        data.isregist = true;
+        this.props.userdataUpdate.registting(data);
         setTimeout(()=>{
-            history.push("/user_login");
+            //跳转到信息填写界面
+            history.push("/user_reg/reg_info");
         },1000);
-        console.log("注册成功,1s后跳转");
     }
 
 }

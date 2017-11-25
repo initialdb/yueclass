@@ -9,12 +9,12 @@ class FileUpLoad extends Component{
     render(){
         return(
             <div className="upload-file">
-                <form action="http://localhost:3000/api/course/homework" id="form-upload" method="POST" encType="multipart/form-data">
+                <form action="http://123.207.242.39:3000/api/course/homework" id="form-upload" method="POST" encType="multipart/form-data">
                     <span>科目：</span><input list="subject" name="sub_value"/>
                     <datalist id="subject">
                         {this.props.subjects.map((item,index)=>{
                           return(
-                              <option value={item.course_id} key={index}>{item.title}</option>
+                              <option value={item.id} key={index}>{item.title}</option>
                           )
                         })}
                     </datalist>

@@ -8,3 +8,5 @@ export const GROUP_CREW = "GROUP_CREW";         //分组
 export const UPDATE_COURSE = "UPDATE_COURSE";   //课程
 export const LOGIN_IN  = "LOGIN_IN";            //登录
 export const REGIST_USER ="REGIST_USER";        //注册
+export const COURSE_WORK = "COURSE_WORK";       //课程作业
+export const INIT_REDUX = "INIT_REDUX";         //初始化redux状态

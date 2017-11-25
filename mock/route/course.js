@@ -3,9 +3,12 @@ const comment = require("../comment/comment");
 const mysql = require("mysql");
 const pathLib = require("path");
 const fs = require("fs");
+const multer=require('multer');
 
-
+//db链接
 const db = mysql.createPool({host:"localhost",user:"root",password:"ykn5820123456",database:"yueclass"});
+//文件存储设置
+mulObj = multer({dest:"./static/upload"});
 
 module.exports = function () {
     let router = express.Router();
@@ -25,6 +28,7 @@ module.exports = function () {
         }
     });
 
+    router.use(mulObj.any());
     /**
      * 获取课程数据
      */
@@ -87,8 +91,10 @@ module.exports = function () {
                         if (err){
                             console.log(err);
                         }else {
-                            if (data.length===0)
+                            if (data.length===0){
                                 console.log("not found");
+                                res.send(data).end();
+                            }
                             else {
                                 //sql语句拼接，获得该用户所有的courseid
                                 let account="";
@@ -98,7 +104,7 @@ module.exports = function () {
                                 account += data[i].account;
                                 console.log( data[i].account);
                                 //从user_table中查询用户名
-                                db.query(`SELECT username,account FROM user_table WHERE account in (${account})`,(err,data)=>{
+                                db.query(`SELECT username,account,headsrc FROM user_table WHERE account in (${account})`,(err,data)=>{
                                     if (err){
                                         console.log(err)
                                     }else {
@@ -132,11 +138,18 @@ module.exports = function () {
 
             db.query(`INSERT INTO course_grade_table(ID,account,rev,course_id,score,str) VALUES(0,"${resdata.customid}", "${resdata.user_account}","${resdata.course_id}",${resdata.star_count},"${resdata.comment_str}")`,
                 (err,data)=>{
+                    const reslut ={
+                        successed:false
+                    };
                 if (err){
+                    reslut.successed = false;
                     console.log(err);
                 }else {
                     console.log("success");
+                   reslut.successed = true;
                 }
+                //返回结果
+                res.send(reslut).end();
             })
         }
     });
@@ -147,7 +160,6 @@ module.exports = function () {
     router.post("/homework",(req,res)=>{
         const sub =req.body.sub_value;            //课程号
         const ext = pathLib.parse(req.files[0].originalname).ext;       //文件拓展名
-
         const oldPath = req.files[0].path;        //老文件路径
         const newPath = oldPath+ext;                //新文件路径
         const newFileName = req.files[0].filename+ext;  //存在服务器的文件名
@@ -167,7 +179,7 @@ module.exports = function () {
                     }else {
                         if (data.length===0){
                             console.log("没有数据");
-                            res.redirect(500,"http://localhost:3000/get/upload/result");
+                            res.redirect(500,"http://123.207.242.39:3000:3000/get/upload/result");
                         }
                         else {
                             //检查是该生是否有这门课
@@ -200,6 +212,40 @@ module.exports = function () {
             }
         });
     });
+
+    /**
+     * 下载作业列表
+     */
+    router.post("/download/homework",(req,res)=>{
+        //解析上传过来的数据中的所有courseid
+        const course_ids = req.body.course_ids;
+        //数据库查询数据
+        db.query(`SELECT * FROM homework_table WHERE courseid IN (${course_ids})`,(err,data)=>{
+           if (err){
+               console.log(err);
+           }else {
+               if (data.length===0)
+                   console.log("没有作业数据");
+               else {
+                   res.send(data).end();
+               }
+           }
+        });
+    });
+
+    /**
+     * 下载作业
+     */
+    router.get("/download/homework/:courseid",(req,res)=>{
+        //路径
+        let path = "static/upload/"+req.query.src;
+        res.download(path,(err)=>{
+            if (err){
+                console.log(err);
+            }
+        });
+    });
+
 
     return router;
 };

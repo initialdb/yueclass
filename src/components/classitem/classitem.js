@@ -13,7 +13,7 @@ class ClassItem extends Component{
         return(
             <Link to={url}>
                 <div className="class-item">
-                    <img src={this.props.item.url} alt="图挂了"/>
+                    <img src={this.props.item.iconsrc} alt="图挂了"/>
                     <p>{this.props.item.title}</p>
                 </div>
             </Link>

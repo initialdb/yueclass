@@ -8,7 +8,7 @@ const initialState = {
     classgrade:"无",
     headsrc:"",
     islogin:false,      //是否登录
-    isregist:false          //是否注册
+    isregist:false,          //是否注册
 };
 
 export default function user_reducer(state=initialState,action) {
@@ -17,6 +17,8 @@ export default function user_reducer(state=initialState,action) {
             return action.data;
         case actionTypes.REGIST_USER:       //注册
             return action.data;
+        case actionTypes.INIT_REDUX:        //初始化数据
+            return initialState;
         default:
             return state;
     }

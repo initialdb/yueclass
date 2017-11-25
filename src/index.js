@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import "./nprogress.css"
 import registerServiceWorker from './registerServiceWorker';
 import RouterMap from "./router/routerMap";
 import configureStore from "./store/configureStore";

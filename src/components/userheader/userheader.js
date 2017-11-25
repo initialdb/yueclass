@@ -15,7 +15,7 @@ class UserHeader extends Component{
                     <Link to="/"><img src ={require("../../static/image/goback.png")}/></Link>
                 </div>
                 <div className="header-portrait">
-                    <img src={require("../../static/image/headportrait.jpg")}/>
+                    <img src={"http://123.207.242.39:3000/api/header/"+this.props.headsrc}/>
                 </div>
                 <div className="user-info">
                     <p className="user-name">{this.props.username}</p>

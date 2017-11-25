@@ -1,13 +1,15 @@
 import React,{Component} from "react"
 import "./style.less"
 import {post} from "../../fetch/post"
+import {Link} from "react-router-dom"
+import nProgress from "nprogress";
 
 class Login extends Component{
     constructor(props){
         super(props);
         this.state = {
-            account:this.props.userdata.account,
-            password:this.props.userdata.password
+            account:"",
+            password:""
         };
     }
 
@@ -24,15 +26,44 @@ class Login extends Component{
                                            onChange={this.handlePasswordChange.bind(this)}/>
                     <div className="parting-line"></div>
                 </div>
-                <p className="reg-btn">{this.props.link_title}</p>
+                <Link to={this.props.link_url}><p className="reg-btn">{this.props.link_title}</p></Link>
                 <button className="submit-btn" onClick={this.handleSubmit.bind(this)}>登录</button>
             </div>
         );
     }
 
     componentDidMount(){
-        //从服务器请求数据
+        //自动登录,记住密码
+        if(this.props.admin_type=="log"&&localStorage.getItem("userdata")){
+            const data = JSON.parse(localStorage.getItem("userdata"));
+            const userdata = {
+                account:data.account,
+                password:data.password
+            };
+            //更新数据到state，免得等下存错了,但是感觉有点问题，暂时说不上来
+            this.setState({
+                account:data.account,
+                password:data.password
+            });
+            //提交数据到服务器
+            let reslut = post("http://123.207.242.39:3000/api/admin/login", userdata);
+            nProgress.start();
+            reslut.then((res) => {
+                nProgress.done();
+                return res.json();
+            }).then((json) => {
+                //登录成功
+                if (json.islogin) {
+                    //do something
+                    let doSuccess = this.props.doSuccess;
+                    doSuccess(this,json);
+                } else {
+                    console.log(json.str);
+                }
+            });
+        }
     }
+
 
     //账号密码监听
     handleAccountChange(e){
@@ -61,7 +92,7 @@ class Login extends Component{
                     password: this.state.password
                 };
                 //提交数据到服务器
-                let reslut = post("http://localhost:3000/api/admin/login", userdata);
+                let reslut = post("http://123.207.242.39:3000/api/admin/login", userdata);
                 reslut.then((res) => {
                     return res.json();
                 }).then((json) => {
@@ -71,12 +102,13 @@ class Login extends Component{
                         let doSuccess = this.props.doSuccess;
                         doSuccess(this,json);
                     } else {
-                        console.log(json.str);
+                        alert("登录失败");
                     }
                 });
             }
         }
-        else if(this.props.admin_type=="reg"){      //注册操作
+        //注册操作
+        else if(this.props.admin_type=="reg"){
             if (!(this.state.account || this.state.password)) {
                 alert("账号或密码为空");
             }else {
@@ -85,22 +117,21 @@ class Login extends Component{
                     password: this.state.password
                 };
                 //提交数据到服务器
-                let reslut = post("http://localhost:3000/api/admin/regist", userdata);
+                let reslut = post("http://123.207.242.39:3000/api/admin/regist", userdata);
                 reslut.then((res)=>{
                     return res.json();
                 }).then((json)=>{
-                    console.log(json);
                     //注册成功
+                    alert("注册成功");
                     if (json.isregist){
                         this.props.doSuccess();
                     }else {
-                        console.log(json.str);
+                        alert("注册失败");
                     }
                 });
             }
         }
     }
-
 }
 
 export default Login

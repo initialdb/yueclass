@@ -1,13 +1,12 @@
-import *as actionTypes from "../constants/actionType";
+import *as actionTypes from "../constants/actionType"
 
 const initialState = {
-    count:0,
-    course:[]
+    files:[]
 };
 
-export default function (state=initialState,action) {
+export default function coursework_reducer(state=initialState,action) {
     switch (action.type){
-        case actionTypes.UPDATE_COURSE:
+        case actionTypes.COURSE_WORK:
             return action.data;
         case actionTypes.INIT_REDUX:
             return initialState;

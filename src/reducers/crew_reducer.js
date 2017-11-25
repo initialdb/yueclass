@@ -11,6 +11,8 @@ export default function crew_reducer(state=initialState,action) {
     switch (action.type){
         case actionTypes.GROUP_CREW:
             return action.data;
+        case actionTypes.INIT_REDUX:
+            return initialState;
         default:
             return state;
     }

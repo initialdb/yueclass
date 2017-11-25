@@ -14,6 +14,8 @@ export default function comment_reducer(state=initialState, action){
             return action.data;
         case actionTypes.COMMENT_STR:
             return action.data;
+        case actionTypes.INIT_REDUX:
+            return initialState;
         default:
             return state;
     }

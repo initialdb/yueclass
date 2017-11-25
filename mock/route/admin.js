@@ -1,9 +1,16 @@
 const express = require("express");
 const comment = require("../comment/comment");
 const mysql = require("mysql");
+const multer = require("multer");
+const fileUtils = require("../utils/fileutils");
+const fs = require("fs");
+const pathLib = require("path");
 
-
+//db链接
 const db = mysql.createPool({host:"localhost",user:"root",password:"ykn5820123456",database:"yueclass"});
+
+//文件上传
+mulObj = multer({dest:"./static/header"});
 
 module.exports = function () {
   let router = express.Router();
@@ -25,6 +32,10 @@ module.exports = function () {
      }
   });
 
+    /**
+     * 文件上传
+     */
+    router.use(mulObj.any());
   /**
    * 登录验证
     */
@@ -87,6 +98,7 @@ module.exports = function () {
                             reg_result.str = "数据库错误";
                             res.send(reg_result).end();
                         }else {
+                            req.session["account"] = account;       //更新session中的用户信息
                             reg_result = {
                                 str:"注册成功",
                                 isregist:true,
@@ -102,6 +114,41 @@ module.exports = function () {
         });
     });
 
+    /**
+     * 注册基本信息填写
+     */
+    router.post("/regist/information/filling",(req,res)=>{
+        //提取信息
+        const file =req.files[0];           //文件
+        const name = req.body.username;     //名字
+        const classnum = req.body.classnum;     //班级
+        const phone = req.body.call;        //电话
+        //重命名文件
+        const ext = pathLib.parse(file.originalname).ext;       //文件拓展名
+        const oldPath = file.path;        //老文件路径
+        const newPath = oldPath+ext;                //新文件路径
+        const newFileName = req.files[0].filename+ext;  //存在服务器的文件名
+
+        fs.rename(oldPath,newPath,(err)=> {
+            if (err) {
+                console.log(err);
+                res.status(504).send("error");
+            }else {
+                //更新数据库中的用户数据
+                db.query(`UPDATE user_table SET headsrc="${newFileName}",phone=${phone},class="${classnum}",username="${name}" \
+                WHERE account="${req.session["account"]}"`,(err,data)=>{
+                    if (err){
+                        console.log(err);
+                        res.status(504).send("error");
+                    }else {
+                        res.status(200).send("error");
+                    }
+                });
+            }
+        });
+
+
+    });
 
   return router;
 };

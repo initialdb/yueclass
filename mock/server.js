@@ -5,11 +5,9 @@ const multer=require('multer');
 const mysql=require('mysql');
 const cookieParser=require('cookie-parser');
 const cookieSession=require('cookie-session');
-const expressRoute=require('express-route');
-const expressPromise = require("express-promise");
 
 
-const multerObj=multer({dest: './static/upload'});
+// const multerObj=multer({dest: './static/upload'});
 
 //新建服务器
 const server = express();
@@ -21,8 +19,7 @@ server.use(bodyParser.urlencoded({
     limit:2*1024*1024       //限制数据大小2mb
 }));
 
-server.use(multerObj.any());  //接收文件
-// server.use(expressPromise());   //使用promise
+// server.use(multerObj.any());  //接收文件
 
 //设置cookie和session
 const keys=[];          //session的keys
@@ -40,4 +37,4 @@ server.use(cookieSession({
 server.use("/api/admin",require("./route/admin")());
 server.use("/api/course",require("./route/course")());
 //静态资源加载
-server.use(static('./static/'));
+server.use("/api/",express.static('./static/'));
